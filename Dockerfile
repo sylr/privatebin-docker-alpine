@@ -2,11 +2,11 @@ FROM php:fpm-alpine
 
 MAINTAINER PrivateBin <support@privatebin.org>
 
-ENV RELEASE 1.2.1
+ENV RELEASE 1.3
 
 RUN \
 # Install dependencies
-    apk add --no-cache nginx supervisor \
+    apk add --no-cache nginx supervisor postgresql-dev \
 # Install PHP extension: opcache
     && docker-php-ext-install -j$(nproc) opcache \
     && rm -f /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini \
@@ -18,6 +18,9 @@ RUN \
         --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
     && apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev \
+# Install PHP extension: pgsql
+    && docker-php-ext-configure pgsql \
+    && docker-php-ext-install -j$(nproc) pdo pdo_pgsql \
 # Remove (some of the) default nginx config
     && rm -f /etc/nginx.conf \
     && rm -f /etc/nginx/conf.d/default.conf \
