@@ -2,7 +2,7 @@ FROM php:fpm-alpine
 
 MAINTAINER PrivateBin <support@privatebin.org>
 
-ENV RELEASE 1.3
+ENV RELEASE 1.3.4
 
 RUN \
 # Install dependencies
@@ -11,7 +11,7 @@ RUN \
     && docker-php-ext-install -j$(nproc) opcache \
     && rm -f /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini \
 # Install PHP extension: gd
-    && apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev \
+    && apk add --no-cache freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev gnupg \
     && docker-php-ext-configure gd \
         --with-freetype-dir=/usr/include/ \
         --with-png-dir=/usr/include/ \
